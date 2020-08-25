@@ -1,0 +1,113 @@
+OBJECTIVE:
+In chess, a queen can move as far as she pleases, horizontally, vertically, or diagonally. A chess board has 4 rows and 4 columns. The standard 4 by 4 Queen’s problem asks how to place 4 queens on an ordinary chess board so that none of them can hit any other in one move
+
+ALGORITHM:
+1. Place the queens column wise, start from the left most column
+2. If all queens are placed.
+	1. return true and print the solution matrix.
+3. Else
+	1.Try all the rows in the current column.
+	2.Check if queen can be placed here safely if yes mark the current cell in solution matrix as 1 and try to solve the rest of the problem recursively.
+	3.If placing the queen in above step leads to the solution return true.
+	4.If placing the queen in above step does not lead to the solution , BACKTRACK, mark the current cell in solution matrix as 0 and return false.
+4. If all the rows are tried and nothing worked, return false and print NO SOLUTION.
+
+
+INPUT
+we need the no. of Queens placed in the Chess Board 
+
+OUTPUT:
+Print the Board where the Queen is placed.
+
+CODE:
+#include<iostream>
+using namespace std;
+
+bool QueenisSafe(int a[][10],int i,int j, int n)
+{
+	//check column
+	for(int row=0;row<i;row++)
+	{
+		if(a[row][j]==1)
+		{
+			return false;
+		}
+	}
+	//check left diagonal
+	int x=i;
+	int y=j;
+	while(x>=0 && y>=0)
+	{
+		if(a[x][y]==1)
+		{
+			return false;
+
+		}
+		x--;
+		y--;
+	}
+	//check right diagonal
+	 x=i;
+	 y=j;
+	while(x>=0 && y<n)
+	{
+		if(a[x][y]==1)
+		{
+			return false;
+
+		}
+		x++;
+		y++;
+	}
+	//position is now safe
+	return true;
+}
+
+bool SolveNQueen(int a[][10],int i,int n)
+{
+	//base case
+	if(i==n)
+	{
+		// print the board
+		for(int i=0;i<n;i++)
+		{
+			for(int j=0;j<n;j++)
+			{
+				if(a[i][j]==1)
+				{
+					cout<<"Q";
+				}
+				else{
+					cout<<"_";
+				}
+			}
+			cout<<endl;
+		}
+		return true;
+	}
+	//try to place the queen in the current row
+	for(int j=0;j<n;j++)
+	{
+		if( QueenisSafe(a,i,j,n))
+		{
+			a[i][j]=1;
+			bool nextqueen=SolveNQueen(a,i+1,n);
+			if(nextqueen){
+				return true;
+			}
+			
+		}
+		// if assumption is wrong
+		a[i][j]=0; //backtrack
+	}
+	return false;
+}	
+
+int main()
+{
+	int n;
+	cout<<"Enter the no. of Queen=  ";
+	cin>>n;
+	int a[10][10]={0};
+	SolveNQueen(a,0,n);
+}
