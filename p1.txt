@@ -1,0 +1,100 @@
+OBJECTIVE
+To make a quick sort program
+
+METHODOLOGY
+1.A pivot element is chosen from the array. You can choose any element from the array as the pivot element.
+Here, we have taken the rightmost (ie. the last element) of the array as the pivot element.
+The elements smaller than the pivot element are put on the left and the elements greater than the pivot element are put on the right.
+2.Put all the smaller elements on the left and greater on the right of pivot element
+3.A pointer is fixed at the pivot element. The pivot element is compared with the elements beginning from the first index. If the element greater than the pivot element is reached, a second pointer is set for that element.
+Now, the pivot element is compared with the other elements (a third pointer). If an element smaller than the pivot element is reached, the smaller element is swapped with the greater element found earlier
+4.Comparison of pivot element with other elements
+The process goes on until the second last element is reached.
+5.Finally, the pivot element is swapped with the second pointer.
+Swap pivot element with the second pointer
+6.Now the left and right subparts of this pivot element are taken for further processing in the steps below.
+Pivot elements are again chosen for the left and the right sub-parts separately. Within these sub-parts, the pivot elements are placed at their right position. Then, step 2 is repeated.
+7.Select pivot element of in each half and put at correct place using recursion
+The sub-parts are again divided into smaller sub-parts until each subpart is formed of a single element.
+8.At this point, the array is already sorted.
+Quicksort uses recursion for sorting the sub-parts.
+
+On the basis of Divide and conquer approach, quicksort algorithm can be explained as:
+
+Divide
+The array is divided into subparts taking pivot as the partitioning point. The elements smaller than the pivot are placed to the left of the pivot and the elements greater than the pivot are placed to the right.
+Conquer
+The left and the right subparts are again partitioned using the by selecting pivot elements for them. This can be achieved by recursively passing the subparts into the algorithm.
+Combine
+This step does not play a significant role in quicksort. The array is already sorted at the end of the conquer step.
+You can understand the working of quicksort with the help of the illustrations below.
+
+INPUT
+we need the size of array from ths user and the elements of array to be sorted.
+
+OUTPUT
+A Sorted array will be displayed.
+
+CODE
+#include<iostream>
+using namespace std;
+
+void swap(int* a, int* b) 
+{ 
+	int t = *a; 
+	*a = *b; 
+	*b = t; 
+} 
+
+int partition (int arr[], int low, int high) 
+{ 
+	int pivot = arr[high]; // pivot 
+	int i = (low - 1); // Index of smaller element 
+
+	for (int j = low; j <= high- 1; j++) 
+	{ 
+		// If current element is smaller than or 
+		// equal to pivot 
+		if (arr[j] <= pivot) 
+		{ 
+			i++; // increment index of smaller element 
+			swap(&arr[i], &arr[j]); 
+		} 
+	} 
+	swap(&arr[i + 1], &arr[high]); 
+	return (i + 1); 
+} 
+
+void quickSort(int arr[], int low, int high) 
+{ 
+	if (low < high) 
+	{ 
+		
+		int pi = partition(arr, low, high); 
+
+		quickSort(arr, low, pi - 1); 
+		quickSort(arr, pi + 1, high); 
+	} 
+} 
+
+void printArray(int arr[], int size) 
+{ 
+	int i; 
+	for (i=0; i < size; i++) 
+		printf("%d ", arr[i]); 
+	printf("\n"); 
+} 
+
+int main() 
+{ 
+	int arr[100],n;
+	cout<<"enter size of array";
+	cin>>n;
+	cout<<"enter elements of array";
+	for(int i=0;i<n;i++)
+		cin>>arr[i];
+	quickSort(arr, 0, n-1); 
+	printf("Sorted array: "); 
+	printArray(arr, n); 
+	return 0; 
+} 
